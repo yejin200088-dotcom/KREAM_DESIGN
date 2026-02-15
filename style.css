@@ -1,132 +1,279 @@
+/*=============== GOOGLE FONTS ===============*/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap");
 
-:root { --accent-color: #a876aa; }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+:root { 
+    --accent-color: #a876aa; 
+}
+
+* { 
+    box-sizing: border-box; 
+}
 
 body, html {
-    width: 100%; height: 100%; overflow: hidden;
-    background-color: #000; font-family: "Montserrat", sans-serif;
+    margin: 0; padding: 0;
+    width: 100%; height: 100%;
+    overflow: hidden;
+    background-color: #000;
+    font-family: "Montserrat", sans-serif;
 }
 
-#app { position: relative; width: 100%; height: 100%; }
-
-/* 배경 이미지 및 효과 캔버스 */
-#staticImg, #canvas {
-    position: absolute; top: 0; left: 0;
-    width: 100%; height: 100%; object-fit: cover;
-}
-#staticImg { z-index: 1; }
-#canvas { 
-    z-index: 5; 
-    pointer-events: none !important; /* 중요: 마우스 클릭이 캔버스를 뚫고 버튼에 닿게 함 */
-    transition: opacity 1.5s;
+#app { 
+    position: relative; 
+    width: 100%; 
+    height: 100%; 
 }
 
-/* 네비게이션(햄버거) */
-nav {
-    background-color: #fff; width: 70px; height: 70px; border-radius: 35px;
-    position: fixed; top: 120px; right: 70px; z-index: 100;
-    display: flex; align-items: center; justify-content: center; transition: 0.5s ease;
-}
-nav.active { width: 310px; }
-nav ul { display: flex; list-style: none; overflow: hidden; width: 0; transition: width 0.5s; }
-nav.active ul { width: 100%; }
-nav ul a { color: #000; text-decoration: none; margin: 0 10px; text-transform: uppercase; white-space: nowrap; font-size: 14px; }
-
-.icon { background: none; border: 0; cursor: pointer; width: 30px; height: 30px; position: relative; }
-.icon .line { background: var(--accent-color); height: 2px; width: 20px; position: absolute; left: 5px; transition: 0.5s; }
-.line1 { top: 10px; } .line2 { bottom: 10px; }
-nav.active .line1 { transform: rotate(-45deg) translateY(5.5px); }
-nav.active .line2 { transform: rotate(45deg) translateY(-5.5px); }
-
-/* --- 카루셀 스타일 --- */
-.carousel {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: 10; /* 캔버스(5)보다 높게 설정하여 클릭 보장 */
-    background: #000;
-}
-.carousel__viewport {
-    display: flex; height: 100%; overflow-x: scroll;
-    scroll-behavior: smooth; scroll-snap-type: x mandatory;
-    scrollbar-width: none; -ms-overflow-style: none;
-}
-.carousel__viewport::-webkit-scrollbar { display: none; }
-
-.carousel__slide {
-    flex: 0 0 100%; width: 100%; height: 100%;
-    scroll-snap-align: center; background-size: cover; background-position: center;
-    position: relative;
-}
-
-/* [핵심] 모든 형태의 숫자 자동 생성 방지 */
-.carousel__slide::before, 
-.carousel__snapper::before,
-.carousel__viewport::before {
-    content: none !important;
-    display: none !important;
-}
-
-/* 화살표 버튼 */
-.carousel__prev, .carousel__next {
-    position: absolute; top: 0; width: 10%; height: 100%;
-    z-index: 2; font-size: 0; cursor: pointer;
-}
-.carousel__prev { left: 0; }
-.carousel__next { right: 0; }
-
-/* 화살표 아이콘 (검정) */
-.carousel::before, .carousel::after {
-    content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-    width: 3rem; height: 3rem; z-index: 1; pointer-events: none;
-}
-.carousel::before { left: 20px; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='80,20 80,80 20,50' fill='%23000'/%3E%3C/svg%3E") no-repeat center/contain; }
-.carousel::after { right: 20px; background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolygon points='20,20 20,80 80,50' fill='%23000'/%3E%3C/svg%3E") no-repeat center/contain; }
-
-/* 하단 점 */
-.carousel__navigation { position: absolute; bottom: 30px; width: 100%; text-align: center; }
-.carousel__navigation-button {
-    display: inline-block; width: 12px; height: 12px; background: #fff;
-    border-radius: 50%; margin: 0 5px; opacity: 0.5; transition: 0.3s;
-}
-
-/* 배경 사진들 */
-#carousel__slide1 { background-image: url('image/aboutme1.jpg'); }
-#carousel__slide2 { background-image: url('image/aboutme2.jpg'); }
-#carousel__slide3 { background-image: url('image/aboutme3.jpg'); }
-#carousel__slide4 { background-image: url('image/aboutme4.jpg'); }
-#carousel__slide5 { background-image: url('image/aboutme5.jpg'); }
-#carousel__slide6 { background-image: url('image/aboutme6.jpg'); }
-
-/* 1. 숫자가 절대 안 보이게 강제 박멸 */
-.carousel__slide::before, 
-.carousel__snapper::before {
-    content: none !important;
-    display: none !important;
-}
-
-/* 2. 캔버스가 클릭을 막지 못하게 '유리벽' 뚫기 */
-#canvas {
-    z-index: 5 !important;
-    pointer-events: none !important; /* 이 코드가 클릭을 통과시킵니다! */
-}
-
-/* 3. 카루셀 레이어 위치 조정 */
-.carousel {
-    z-index: 10 !important; /* 캔버스보다 위로 올림 */
+#staticImg {
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: 1;
 }
 
-/* 4. 화살표 영역이 확실히 클릭되도록 설정 */
-.carousel__prev, .carousel__next {
-    display: block !important;
-    position: absolute !important;
-    top: 0;
-    width: 20%; /* 클릭 영역을 넓게 잡음 */
-    height: 100%;
-    z-index: 999 !important; /* 최상단으로 올림 */
-    cursor: pointer !important;
+#canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
-.carousel__prev { left: 0; }
-.carousel__next { right: 0; }
+
+/* --- 카루셀 레이아웃 --- */
+.carousel {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10;
+    background: transparent;
+}
+
+.carousel__viewport {
+    display: flex; 
+    width: 100%; height: 100%;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    margin: 0; padding: 0; 
+    list-style: none;
+}
+
+.carousel__slide {
+    flex: 0 0 100%;
+    width: 100%; height: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+/* --- [중요] 슬라이드 좌우 버튼 수정 --- */
+.carousel__btn { 
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%) scale(3); 
+    width: 60px; 
+    height: 60px; 
+    background: transparent !important; 
+    border: none !important; 
+    outline: none;
+    color: #000 !important; 
+    cursor: pointer; 
+    /* z-index를 높여서 캔버스나 슬라이드보다 위로 올림 */
+    z-index: 500; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    transition: all 0.3s ease;
+    pointer-events: auto; /* 마우스 이벤트 강제 활성화 */
+}
+
+.carousel__btn:hover { 
+    opacity: 0.6; 
+    transform: translateY(-50%) scale(3.5); /* 호버 시 더 크게 반응 */
+}
+
+.carousel__btn::before { 
+    content: ''; 
+    width: 12px; 
+    height: 12px; 
+    border-top: 4px solid #000; 
+    border-right: 4px solid #000; 
+    display: inline-block; 
+}
+
+.prev { left: 80px; } 
+.prev::before { transform: rotate(-135deg); margin-left: 6px; }
+
+.next { right: 80px; } 
+.next::before { transform: rotate(45deg); margin-right: 6px; }
+
+/* --- 네비게이션 --- */
+nav {
+    z-index: 1000;
+    background: transparent;
+    width: 80px; height: 80px;
+    display: flex; 
+    position: fixed; 
+    top: 70px; 
+    right: 50px; 
+    align-items: center; 
+    border-radius: 40px; 
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+nav.active { 
+    width: 500px; 
+    background: linear-gradient(135deg, rgba(255, 165, 0, 0.5), rgba(168, 118, 170, 0.5));
+    backdrop-filter: blur(10px);
+}
+
+nav ul {
+    display: flex; align-items: center; list-style: none;
+    margin: 0; padding: 0 0 0 25px;
+    width: 100%; opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+nav.active ul { opacity: 1; }
+
+nav ul a {
+    color: #fff; text-decoration: none;
+    margin-left: 25px; font-size: 18px; font-weight: 500;
+    text-transform: uppercase; white-space: nowrap;
+}
+
+.icon { 
+    background: none; 
+    border: 0; 
+    cursor: pointer; 
+    width: 220px;  
+    height: 220px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    flex-shrink: 0;
+    position: absolute; 
+    right: -85px; 
+    top: calc(50% + 10px); 
+    transform: translateY(-50%); 
+    z-index: 1001;
+    padding: 0;
+    margin: 0;
+    outline: none;
+}
+
+#toggleImg { 
+    width: 220px !important; 
+    height: 220px !important; 
+    transform: translateY(12px);
+}
+
+/* --- 상세보기 버튼 --- */
+.detail-button { 
+    position: absolute; 
+    top: 375px; 
+    left: 740px; 
+    width: 200px; 
+    height: 200px; 
+    z-index: 400; /* 슬라이드 버튼보다는 낮게 설정 */
+    transition: transform 0.3s ease;
+}
+
+.detail-button img { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: contain; 
+}
+
+.detail-button:hover { 
+    transform: scale(1.1); 
+}
+
+/* --- 클릭 영역 좌표 --- */
+.custom-area-link-1 { position: absolute; left: 240px; top: 550px; width: 569px; height: 75px; z-index: 60; cursor: pointer; }
+.custom-area-link-2 { position: absolute; left: 240px; top: 550px; width: 438px; height: 75px; z-index: 60; cursor: pointer; }
+
+/* --- 팝업 (모서리 둥글게 & 고정 닫기 버튼) --- */
+body.no-scroll { overflow: hidden !important; }
+
+.popup-dim {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.popup {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 95%; 
+    height: 80%;
+    max-width: 1000px;
+    background: #000;
+    z-index: 9999;
+    border-radius: 40px; /* 네 면 둥글게 */
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    scrollbar-width: none; 
+}
+
+.popup::-webkit-scrollbar { display: none; }
+
+.popup-dim.show, .popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#popupImg {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 40px;
+}
+
+/* 화면에 고정된 닫기 버튼 */
+.popup-close {
+    position: fixed;
+    top: 105px;
+    right: 370px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    font-size: 30px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    z-index: 10001; /* 팝업 위로 완전 고정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+/* 팝업 열릴 때 닫기 버튼 노출 */
+.popup-dim.show ~ .popup-close {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+    transform: scale(1.1);
+}
