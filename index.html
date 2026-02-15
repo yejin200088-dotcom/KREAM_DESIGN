@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - 조화미</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+    <img src="image/mainpage.jpg" alt="background" class="base-image" id="staticImg">
+    <canvas id="canvas"></canvas>
+
+    <section class="carousel" id="aboutCarousel" aria-label="Gallery" style="display: none;">
+        <ol class="carousel__viewport">
+            <li id="carousel__slide1" class="carousel__slide">
+                <div class="carousel__snapper">
+                    <a href="#carousel__slide6" class="carousel__prev">이전</a>
+                    <a href="#carousel__slide2" class="carousel__next">다음</a>
+                </div>
+            </li>
+            <li id="carousel__slide2" class="carousel__slide">
+                <div class="carousel__snapper">
+                    <a href="#carousel__slide1" class="carousel__prev">이전</a>
+                    <a href="#carousel__slide3" class="carousel__next">다음</a>
+                </div>
+            </li>
+            <li id="carousel__slide3" class="carousel__slide">
+                <div class="carousel__snapper">
+                    <a href="#carousel__slide2" class="carousel__prev">이전</a>
+                    <a href="#carousel__slide4" class="carousel__next">다음</a>
+                </div>
+            </li>
+            <li id="carousel__slide4" class="carousel__slide">
+                <div class="carousel__snapper">
+                    <a href="#carousel__slide3" class="carousel__prev">이전</a>
+                    <a href="#carousel__slide5" class="carousel__next">다음</a>
+                </div>
+            </li>
+            <li id="carousel__slide5" class="carousel__slide">
+                <div class="carousel__snapper">
+                    <a href="#carousel__slide4" class="carousel__prev">이전</a>
+                    <a href="#carousel__slide6" class="carousel__next">다음</a>
+                </div>
+            </li>
+            <li id="carousel__slide6" class="carousel__slide">
+                <div class="carousel__snapper">
+                    <a href="#carousel__slide5" class="carousel__prev">이전</a>
+                    <a href="#carousel__slide1" class="carousel__next">다음</a>
+                </div>
+            </li>
+        </ol>
+        <aside class="carousel__navigation">
+            <ol class="carousel__navigation-list">
+                <li class="carousel__navigation-item"><a href="#carousel__slide1" class="carousel__navigation-button"></a></li>
+                <li class="carousel__navigation-item"><a href="#carousel__slide2" class="carousel__navigation-button"></a></li>
+                <li class="carousel__navigation-item"><a href="#carousel__slide3" class="carousel__navigation-button"></a></li>
+                <li class="carousel__navigation-item"><a href="#carousel__slide4" class="carousel__navigation-button"></a></li>
+                <li class="carousel__navigation-item"><a href="#carousel__slide5" class="carousel__navigation-button"></a></li>
+                <li class="carousel__navigation-item"><a href="#carousel__slide6" class="carousel__navigation-button"></a></li>
+            </ol>
+        </aside>
+    </section>
+</div>
+
+<nav id="nav">
+    <ul>
+        <li><a href="#" id="goAbout">about me</a></li>
+        <li><a href="#" id="goPortfolio">portfolio</a></li>
+    </ul>
+    <button class="icon" id="toggle">
+        <div class="line line1"></div>
+        <div class="line line2"></div>
+    </button>
+</nav>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
